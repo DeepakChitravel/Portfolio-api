@@ -1,28 +1,23 @@
-import express from "express";
-import auth from "../middleware/auth.js";
 import Profile from "../models/Profile.js";
 
-const router = express.Router();
-
 /* GET PROFILE */
-router.get("/", auth, async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
+    const profile = await Profile.findOne();
     res.json(profile || {});
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch profile" });
   }
-});
+};
 
 /* CREATE or UPDATE PROFILE */
-router.post("/", auth, async (req, res) => {
+export const saveProfile = async (req, res) => {
   try {
     console.log("🟢 PROFILE BODY:", req.body);
-    console.log("🧑 USER:", req.user.id);
 
     const profile = await Profile.findOneAndUpdate(
-      { user: req.user.id },
-      { ...req.body, user: req.user.id },
+      {},              // single profile
+      req.body,        // JSON from frontend
       { new: true, upsert: true }
     );
 
@@ -31,6 +26,4 @@ router.post("/", auth, async (req, res) => {
     console.error("🔴 PROFILE SAVE ERROR:", err);
     res.status(500).json({ message: "Profile save failed" });
   }
-});
-
-export default router;
+};

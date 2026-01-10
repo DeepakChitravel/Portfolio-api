@@ -2,13 +2,19 @@ import mongoose from "mongoose";
 
 const ProfileSchema = new mongoose.Schema(
   {
-    name: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      unique: true,
+    },
+    name: { type: String, required: true },
     role: String,
     shortIntro: String,
     bio: String,
-    skills: [String],
+    skills: { type: [String], default: [] },
     avatar: String,
-    email: String,
+    email: { type: String, required: true },
     location: String,
   },
   { timestamps: true }
