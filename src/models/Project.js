@@ -2,6 +2,13 @@ import mongoose from "mongoose";
 
 const ProjectSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
+
     title: { type: String, required: true },
     year: String,
     shortIntro: String,

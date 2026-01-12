@@ -1,35 +1,34 @@
 import express from "express";
 import auth from "../middleware/auth.js";
-import Profile from "../models/Profile.js";
+import Project from "../models/Project.js";
 
 const router = express.Router();
 
-/* GET PROFILE */
+/* ---------------- GET ALL PROJECTS ---------------- */
 router.get("/", auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id });
-    res.json(profile || {});
+    const projects = await Project.find({ user: req.user.id })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(projects);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch profile" });
+    console.error("GET PROJECTS ERROR:", err);
+    res.status(500).json({ message: "Failed to fetch projects" });
   }
 });
 
-/* CREATE or UPDATE PROFILE */
+/* ---------------- ADD PROJECT ---------------- */
 router.post("/", auth, async (req, res) => {
   try {
-    console.log("🟢 PROFILE BODY:", req.body);
-    console.log("🧑 USER:", req.user.id);
+    const project = await Project.create({
+      ...req.body,
+      user: req.user.id,
+    });
 
-    const profile = await Profile.findOneAndUpdate(
-      { user: req.user.id },
-      { ...req.body, user: req.user.id },
-      { new: true, upsert: true }
-    );
-
-    res.json(profile);
+    res.status(201).json(project);
   } catch (err) {
-    console.error("🔴 PROFILE SAVE ERROR:", err);
-    res.status(500).json({ message: "Profile save failed" });
+    console.error("ADD PROJECT ERROR:", err);
+    res.status(400).json({ message: err.message });
   }
 });
 
