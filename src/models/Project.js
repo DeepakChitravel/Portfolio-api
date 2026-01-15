@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
-const ProjectSchema = new mongoose.Schema(
+const projectSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      index: true,
     },
 
     title: { type: String, required: true },
     year: String,
+    date: String,
     shortIntro: String,
     description: String,
     image: String,
@@ -19,10 +19,10 @@ const ProjectSchema = new mongoose.Schema(
     category: String,
     githubUrl: String,
     liveUrl: String,
-    featured: { type: Boolean, default: false },
-    visible: { type: Boolean, default: true },
+    featured: Boolean,
+    visible: Boolean,
   },
   { timestamps: true }
 );
 
-export default mongoose.model("Project", ProjectSchema);
+export default mongoose.model("Project", projectSchema);
