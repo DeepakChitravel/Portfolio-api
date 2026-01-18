@@ -74,4 +74,18 @@ router.delete("/:id", auth, async (req, res) => {
   }
 });
 
+
+/* -------- PUBLIC: GET VISIBLE PROJECTS (Portfolio Website) -------- */
+router.get("/public", async (req, res) => {
+  try {
+    const projects = await Project.find({ visible: true })
+      .sort({ createdAt: -1 })
+      .select("-user"); // hide user field
+
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch public projects" });
+  }
+});
+
 export default router;

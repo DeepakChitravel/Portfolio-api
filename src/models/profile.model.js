@@ -8,14 +8,22 @@ const profileSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+
+    // Basic Info
     name: { type: String, required: true },
+    email: { type: String, required: true },
     role: { type: String },
+    location: { type: String },
+
+    // Portfolio Info
     shortIntro: { type: String },
     bio: { type: String },
     skills: [{ type: String }],
     avatar: { type: String },
-    location: { type: String },
-    email: { type: String, required: true },
+
+    // 📄 Resume PDF URL
+    resume: { type: String },  // ✅ added
+
   },
   { timestamps: true }
 );
