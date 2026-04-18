@@ -56,4 +56,25 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/create-admin", async (req, res) => {
+  try {
+    const existing = await User.findOne({ email: "admin@gmail.com" });
+    if (existing) {
+      return res.json({ message: "Admin already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash("admin123", 10);
+
+    const admin = await User.create({
+      email: "admin@gmail.com",
+      password: hashedPassword
+    });
+
+    res.json({ message: "Admin created successfully", admin });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 export default router;

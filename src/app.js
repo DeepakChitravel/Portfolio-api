@@ -10,6 +10,7 @@ import projectRoutes from "./routes/project.routes.js";
 import educationRoutes from "./routes/education.routes.js";
 import certificateRoutes from "./routes/certificate.routes.js";
 import uploadRoutes from "./routes/upload.routes.js";
+import experienceRoutes from "./routes/experience.routes.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/educations", educationRoutes);
 app.use("/api/certificates", certificateRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/experiences", experienceRoutes);
 
 // ✅ STATIC FILES (THIS FIXES YOUR ISSUE)
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
