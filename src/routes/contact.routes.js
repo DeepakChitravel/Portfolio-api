@@ -1,21 +1,24 @@
 import express from "express";
+import { sendEmail } from "../utils/sendEmail.js";
 
 const router = express.Router();
 
-// ✅ MUST be "/"
 router.post("/", async (req, res) => {
   try {
-    console.log("📩 Contact Message:", req.body);
+    const { name, email, subject, message } = req.body;
+
+    await sendEmail({ name, email, subject, message });
 
     res.json({
       success: true,
-      message: "Message received successfully"
+      message: "Email sent successfully"
     });
 
   } catch (err) {
+    console.error("Contact Error:", err);
     res.status(500).json({
       success: false,
-      message: "Failed to send message"
+      message: "Failed to send email"
     });
   }
 });
